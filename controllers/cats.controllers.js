@@ -1,4 +1,4 @@
-const { getAllCats, writeCats } = require('../models/cats.models');
+const { getAllCats, writeCat, getCatById } = require('../models/cats.models');
 
 const sendAllCats = (req, res) => {
   getAllCats((err, cats) => {
@@ -8,19 +8,15 @@ const sendAllCats = (req, res) => {
 
 const sendCatById = (req, res) => {
   const { catId } = req.params;
-  getAllCats((err, cats) => {
-    const cat = cats.find(cat => cat.id === catId);
+  getCatById(catId, (err, cat) => {
     res.send({ cat });
   });
 };
 
 const addNewCat = (req, res) => {
   const newCat = req.body;
-  getAllCats((err, cats) => {
-    const newCats = [...cats, newCat];
-    writeCats(newCats, err => {
-      res.status(201).send({ cat: newCat });
-    });
+  writeCat(newCat, err => {
+    res.status(201).send({ cat: newCat });
   });
 };
 

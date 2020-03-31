@@ -1,20 +1,16 @@
 const express = require('express');
+const apiRouter = require('./routes/api.router');
+const { logger } = require('./controllers/logging.controllers');
 const app = express();
-const {
-  sendAllCats,
-  sendCatById,
-  addNewCat
-} = require('./controllers/cats.controllers');
 
 app.use(express.json());
+app.use(logger);
 
-app.get('/', (req, res) => {
-  res.status(200).send({ msg: 'the api is up and running' });
+app.use('/api', apiRouter);
+
+app.use((req, res, next) => {
+  res.status(404).send({ msg: 'resource not found' });
 });
-
-app.get('/api/cats', sendAllCats);
-app.post('/api/cats', addNewCat);
-app.get('/api/cats/:catId', sendCatById);
 
 app.listen(9090, err => {
   if (err) throw err;
