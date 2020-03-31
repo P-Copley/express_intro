@@ -18,7 +18,7 @@ const getAllCats = cb => {
 
 const getCatById = (id, cb) => {
   fs.readFile(`data/cats/${id}.json`, 'utf-8', (err, fileContents) => {
-    if (err) console.log(err);
+    if (err) cb(err);
     else {
       const cat = JSON.parse(fileContents);
       cb(null, cat);
